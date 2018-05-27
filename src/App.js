@@ -21,8 +21,16 @@ class App extends Component {
     let ws = new WebSocket(WS_URI);
     ws.onmessage = (event) => {
       let stocks = JSON.parse(event.data);
+      console.log("ws:", stocks);
       if(!stocks.error)
         this.updateChartData(stocks);
+      else {
+        if(stocks.error === "Empty stocks") {
+          if(this.chart !== undefined)
+            this.chart.destroy();
+          this.setState({ symbols: [] });
+        }
+      }
     };
     this.setState({ ws: ws });
   }
@@ -54,6 +62,7 @@ class App extends Component {
   }
 
   updateChartData(stockData) {
+    console.log("stockData:", stockData);
     let dateLabels = stockData[0].data.map(stockData => stockData.date).reverse();
     let chartData = this.state.chartData;
     let symbols = [];
