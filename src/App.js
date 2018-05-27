@@ -10,7 +10,7 @@ class App extends Component {
   constructor() {
     super();
     this.chart = undefined;
-    this.state = { chartData: {}, ws: undefined };
+    this.state = { chartData: {}, ws: undefined, symbols: [] };
   }
 
   componentDidMount() {
@@ -54,12 +54,12 @@ class App extends Component {
   }
 
   updateChartData(stockData) {
-    console.log("stockData:", stockData);
     let dateLabels = stockData[0].data.map(stockData => stockData.date).reverse();
-    console.log("date label:", dateLabels);
     let chartData = this.state.chartData;
+    let symbols = [];
     chartData.labels = dateLabels;
     chartData.datasets = stockData.map(stock => {
+      symbols.push(stock.symbol);
       return {
         label: stock.symbol,
         data: stock.data.map(stockData => stockData.open),
@@ -68,8 +68,7 @@ class App extends Component {
         backgroundColor: 'green',
       }
     });
-    this.setState({ chartData: chartData });
-    console.log("state:", this.state);
+    this.setState({ chartData: chartData, symbols: symbols });
     this.drawChart();
   }
 
@@ -77,10 +76,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className="chartWrapper">
-          <canvas id="stockChart" height="80"/>
+          <canvas id="stockChart"/>
         </div>
         <div className="stocks">
-          <Stocks ws={ this.state.ws }/>
+          <Stocks ws={ this.state.ws } symbols={ this.state.symbols }/>
         </div>
         <div>
           { Footer() }
