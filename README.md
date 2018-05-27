@@ -1,6 +1,7 @@
-# Freecodecamp Dynamic Web Application Project: Chart the Stock Market (Front-End)
+# stock-chart-client
+Freecodecamp Dynamic Web Application Project: Chart the Stock Market (Front-End)
 
-### Notes:
+### My Notes:
 
 - Use `componentWillReceiveProps` function if parent component
 will update props.
